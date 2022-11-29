@@ -1,7 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import { UIContext } from "../../context";
 export const Navbar = () => {
+  const { toggleSideMenu } = useContext(UIContext);
   return (
     <div>
       <div className="flex justify-between py-6 px-20">
@@ -28,7 +30,10 @@ export const Navbar = () => {
           <Link href="/cart">
             <AiOutlineShoppingCart size={24} />
           </Link>
-          <button className="rounded-2xl bg-black text-white px-2 py-1">
+          <button
+            className="rounded-2xl bg-black text-white px-2 py-1"
+            onClick={toggleSideMenu}
+          >
             Menu
           </button>
         </div>

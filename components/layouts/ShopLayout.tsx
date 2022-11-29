@@ -1,7 +1,9 @@
 import Head from "next/head";
-import { FC } from "react";
-import { Navbar } from "../ui";
-
+import { FC, useContext, useState } from "react";
+import { Navbar, SideMenu } from "../ui";
+import Drawer from "react-modern-drawer";
+import "react-modern-drawer/dist/index.css";
+import { UIContext } from "../../context";
 interface Props {
   title: string;
   pageDescription: string;
@@ -15,6 +17,7 @@ export const ShopLayout: FC<Props> = ({
   pageDescription,
   imageFullUrl,
 }) => {
+  const { sidemenuOpen, toggleSideMenu } = useContext(UIContext);
   return (
     <>
       <Head>
@@ -28,6 +31,10 @@ export const ShopLayout: FC<Props> = ({
       <nav>
         <Navbar />
       </nav>
+
+      <Drawer open={sidemenuOpen} onClose={toggleSideMenu} direction="right">
+        <SideMenu />
+      </Drawer>
       <main className="my-20 mx-auto max-w-[1440px] py-0 px-8">{children}</main>
 
       <footer></footer>

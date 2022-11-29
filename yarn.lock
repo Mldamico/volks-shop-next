@@ -558,6 +558,11 @@ react-icons@^4.6.0:
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.6.0.tgz#f83eda179af5d02c047449a20b702c858653d397"
   integrity sha512-rR/L9m9340yO8yv1QT1QurxWQvWpbNHqVX0fzMln2HEb9TEIrQRGsqiNFQfiv9/JEUbyHmHPlNTB2LWm2Ttz0g==
 
+react-modern-drawer@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-modern-drawer/-/react-modern-drawer-1.1.2.tgz#33a8a167a86e899c5c5258cb4b2fa091d3851445"
+  integrity sha512-v7I6gGHZnJo7mVLFV74NyazEgl7IXJSmnmFE98olhH7sP9O0ul/1l/d7YQOARWyyLPd96P0odriX+nRusDJr6g==
+
 react@18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
