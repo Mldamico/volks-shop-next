@@ -6,21 +6,21 @@ export const Navbar = () => {
   const { toggleSideMenu } = useContext(UIContext);
   return (
     <div>
-      <div className="flex justify-between py-6 px-20">
+      <div className="flex justify-between px-8 py-6 md:px-20">
         <div className="">
           <Link href="/" passHref className="flex items-center">
-            <span className="font-semibold text-xl">Volks </span>
+            <span className="text-xl font-semibold">Volks </span>
             <span className="ml-1 text-md">| Shop</span>
           </Link>
         </div>
-        <div className="space-x-4 hidden md:inline-flex">
-          <Link className="hover:border-b border-black" href="/category/men">
+        <div className="hidden space-x-4 md:inline-flex">
+          <Link className="border-black hover:border-b" href="/category/men">
             Mens
           </Link>
-          <Link className="hover:border-b border-black" href="/category/women">
+          <Link className="border-black hover:border-b" href="/category/women">
             Womens
           </Link>
-          <Link className="hover:border-b border-black" href="/category/kid">
+          <Link className="border-black hover:border-b" href="/category/kid">
             Kids
           </Link>
         </div>
@@ -31,7 +31,7 @@ export const Navbar = () => {
             <AiOutlineShoppingCart size={24} />
           </Link>
           <button
-            className="rounded-2xl bg-black text-white px-2 py-1"
+            className="px-2 py-1 text-white bg-black rounded-2xl"
             onClick={toggleSideMenu}
           >
             Menu

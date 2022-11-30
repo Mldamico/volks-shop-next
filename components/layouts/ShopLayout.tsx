@@ -32,7 +32,12 @@ export const ShopLayout: FC<Props> = ({
         <Navbar />
       </nav>
 
-      <Drawer open={sidemenuOpen} onClose={toggleSideMenu} direction="right">
+      <Drawer
+        open={sidemenuOpen}
+        onClose={toggleSideMenu}
+        direction="right"
+        overlayOpacity={0.7}
+      >
         <SideMenu />
       </Drawer>
       <main className="my-20 mx-auto max-w-[1440px] py-0 px-8">{children}</main>
