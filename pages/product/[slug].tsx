@@ -1,5 +1,6 @@
 import React from "react";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
+import { ProductSlideshow } from "../../components/products";
 import { initialData } from "../../database/products";
 
 const product = initialData.products[0];
@@ -7,7 +8,9 @@ const ProductPage = () => {
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <div className="grid grid-cols-1 sm:grid-cols-2">
-        <div></div>
+        <div>
+          <ProductSlideshow images={product.images} />
+        </div>
         <div className="flex flex-col">
           <h1 className="text-2xl sm:text-4xl">{product.title}</h1>
           <h2 className="font-bold">${product.price}</h2>
