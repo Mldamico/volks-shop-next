@@ -1,13 +1,14 @@
 import React from "react";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { ProductSlideshow } from "../../components/products";
+import { ItemCounter } from "../../components/ui";
 import { initialData } from "../../database/products";
 
 const product = initialData.products[0];
 const ProductPage = () => {
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
-      <div className="grid grid-cols-1 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
           <ProductSlideshow images={product.images} />
         </div>
@@ -15,8 +16,8 @@ const ProductPage = () => {
           <h1 className="text-2xl sm:text-4xl">{product.title}</h1>
           <h2 className="font-bold">${product.price}</h2>
           <div className="my-2">
-            <h3>Amount:</h3>
-            {/* Counter */}
+            <h3 className="font-bold">Amount:</h3>
+            <ItemCounter />
 
             <button className="circular-btn bg-[#3A64D8] text-white w-full py-2">
               Add To Cart
