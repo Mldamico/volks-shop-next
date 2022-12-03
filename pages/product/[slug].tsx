@@ -1,6 +1,6 @@
 import React from "react";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
-import { ProductSlideshow } from "../../components/products";
+import { ProductSlideshow, SizeSelector } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
 import { initialData } from "../../database/products";
 
@@ -18,6 +18,10 @@ const ProductPage = () => {
           <div className="my-2">
             <h3 className="font-bold">Amount:</h3>
             <ItemCounter />
+            <SizeSelector
+              selectedSize={product.sizes[0]}
+              sizes={product.sizes}
+            />
 
             <button className="circular-btn bg-[#3A64D8] text-white w-full py-2">
               Add To Cart
