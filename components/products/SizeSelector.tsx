@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ISize } from "../../interfaces";
 
 interface Props {
-  selectedSize: ISize;
+  selectedSize?: ISize;
   sizes: ISize[];
 }
 export const SizeSelector: FC<Props> = ({ selectedSize, sizes }) => {
