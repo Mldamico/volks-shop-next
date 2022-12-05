@@ -1,5 +1,5 @@
 import React from "react";
-import { CartList } from "../../components/cart";
+import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
 
 const CartPage = () => {
@@ -11,9 +11,12 @@ const CartPage = () => {
           <CartList />
         </div>
         <div className="summary-card">
-          <div className="p-4">
-            <h2>Orden</h2>
-            <hr className="my-1" />
+          <div className="flex flex-col justify-between h-full p-4">
+            <div>
+              <h2>Orden</h2>
+              <hr className="my-1" />
+              <OrderSummary />
+            </div>
             <div className="mt-3">
               <button className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn">
                 Checkout
