@@ -15,7 +15,7 @@ export const OrderSummary = () => {
         <p>Tax</p>
         <p>$20.15</p>
       </div>
-      <hr />
+      <hr className="my-2" />
       <div className="flex justify-between font-bold">
         <p>Total</p>
         <p>$175.45</p>
