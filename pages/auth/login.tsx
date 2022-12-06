@@ -14,7 +14,7 @@ const LoginPage = () => {
               type="email"
               id="email"
               placeholder="Email"
-              className="w-full px-2 py-1 bg-gray-200 border-b-2 border-black outline-none"
+              className="input"
             />
           </div>
           <div>
@@ -23,14 +23,12 @@ const LoginPage = () => {
               type="password"
               id="password"
               placeholder="Password"
-              className="w-full px-2 py-1 bg-gray-200 border-b-2 border-black outline-none"
+              className="input"
             />
           </div>
         </div>
         <div>
-          <button className="circular-btn w-full bg-[#3A64D8] text-white py-2 font-bold my-2">
-            Login
-          </button>
+          <button className="button-secondary">Login</button>
           <Link href={"/auth/register"} className="underline ">
             Don't have an account?
           </Link>

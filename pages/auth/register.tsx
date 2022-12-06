@@ -14,7 +14,7 @@ const RegisterPage = () => {
               type="text"
               id="fullName"
               placeholder="Full Name"
-              className="w-full px-2 py-1 bg-gray-200 border-b-2 border-black outline-none"
+              className="input"
             />
           </div>
           <div>
@@ -23,7 +23,7 @@ const RegisterPage = () => {
               type="email"
               id="email"
               placeholder="Email"
-              className="w-full px-2 py-1 bg-gray-200 border-b-2 border-black outline-none"
+              className="input"
             />
           </div>
           <div>
@@ -37,9 +37,7 @@ const RegisterPage = () => {
           </div>
         </div>
         <div>
-          <button className="circular-btn w-full bg-[#3A64D8] text-white py-2 font-bold my-2">
-            Register
-          </button>
+          <button className="button-secondary">Register</button>
           <Link href={"/auth/login"} className="underline ">
             Have an account?
           </Link>

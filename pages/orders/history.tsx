@@ -47,7 +47,7 @@ const HistoryPage = () => {
         }}
         className="mx-auto ag-theme-alpine"
       >
-        <AgGridReact columnDefs={columnDefs} rowData={rowData}></AgGridReact>
+        <AgGridReact columnDefs={columnDefs} rowData={rowData} />
       </div>
     </ShopLayout>
   );

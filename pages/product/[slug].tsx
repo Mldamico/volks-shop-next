@@ -23,7 +23,7 @@ const ProductPage = () => {
               sizes={product.sizes}
             />
 
-            <button className="circular-btn bg-[#3A64D8] text-white w-full py-2">
+            <button className="w-full py-2 text-white circular-btn bg-secondary">
               Add To Cart
             </button>
 

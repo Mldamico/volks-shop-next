@@ -8,12 +8,7 @@ const AddressPage = () => {
       <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
         <div>
           <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="Name"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
-          />
+          <input id="name" type="text" placeholder="Name" className="input" />
         </div>
         <div>
           <label htmlFor="surname">Surname</label>
@@ -21,7 +16,7 @@ const AddressPage = () => {
             id="surname"
             type="text"
             placeholder="Surname"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
+            className="input"
           />
         </div>
         <div>
@@ -30,7 +25,7 @@ const AddressPage = () => {
             id="address"
             type="text"
             placeholder="Address"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
+            className="input"
           />
         </div>
         <div>
@@ -39,25 +34,16 @@ const AddressPage = () => {
             id="address2"
             type="text"
             placeholder="Address 2"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
+            className="input"
           />
         </div>
         <div>
           <label htmlFor="cp">CP</label>
-          <input
-            id="cp"
-            type="text"
-            placeholder="CP"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
-          />
+          <input id="cp" type="text" placeholder="CP" className="input" />
         </div>
         <div>
           <label htmlFor="pais">Pais</label>
-          <select
-            name="pais"
-            id="pais"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
-          >
+          <select name="pais" id="pais" className="input">
             <option value="Argentina">Argentina</option>
             <option value="Brasil">Brasil</option>
             <option value="Mexico">Mexico</option>
@@ -66,12 +52,7 @@ const AddressPage = () => {
         </div>
         <div>
           <label htmlFor="city">City</label>
-          <input
-            id="city"
-            type="text"
-            placeholder="City"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
-          />
+          <input id="city" type="text" placeholder="City" className="input" />
         </div>
         <div>
           <label htmlFor="tel">Tel. Number</label>
@@ -79,7 +60,7 @@ const AddressPage = () => {
             id="tel"
             type="text"
             placeholder="Tel. Number"
-            className="w-full p-2 bg-gray-200 border-b-2 border-black outline-none"
+            className="input"
           />
         </div>
       </div>
