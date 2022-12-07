@@ -1,11 +1,19 @@
+import { NextPage } from "next";
+import { useRouter } from "next/router";
 import React from "react";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { ProductSlideshow, SizeSelector } from "../../components/products";
-import { ItemCounter } from "../../components/ui";
-import { initialData } from "../../database/products";
+import { FullScreenLoading, ItemCounter } from "../../components/ui";
+import { GetServerSideProps } from "next";
+import { useProducts } from "../../hooks";
+import { IProduct } from "../../interfaces/products";
+import { dbProducts } from "../../database";
 
-const product = initialData.products[0];
-const ProductPage = () => {
+interface Props {
+  product: IProduct;
+}
+
+const ProductPage: NextPage<Props> = ({ product }) => {
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -43,3 +51,23 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { slug = "" } = params as { slug: string };
+  const product = await dbProducts.getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      product,
+    },
+  };
+};
