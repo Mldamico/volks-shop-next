@@ -8,7 +8,6 @@ import { useProducts } from "../hooks";
 export default function HomePage() {
   const { products, isError, isLoading } = useProducts("/products");
   if (isError) return <div>Failed To load</div>;
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <ShopLayout
