@@ -9,6 +9,9 @@ import { useProducts } from "../../hooks";
 import { IProduct } from "../../interfaces/products";
 import { dbProducts } from "../../database";
 
+import { GetStaticPaths } from "next";
+
+import { GetStaticProps } from "next";
 interface Props {
   product: IProduct;
 }
@@ -52,7 +55,39 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 
 export default ProductPage;
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+// export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+//   const { slug = "" } = params as { slug: string };
+//   const product = await dbProducts.getProductBySlug(slug);
+
+//   if (!product) {
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//     };
+//   }
+
+//   return {
+//     props: {
+//       product,
+//     },
+//   };
+// };
+
+export const getStaticPaths: GetStaticPaths = async (ctx) => {
+  const productsSlugs = await dbProducts.getAllPRoductsSlugs();
+
+  return {
+    paths: productsSlugs.map(({ slug }) => ({
+      params: {
+        slug,
+      },
+    })),
+    fallback: "blocking",
+  };
+};
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug = "" } = params as { slug: string };
   const product = await dbProducts.getProductBySlug(slug);
 
