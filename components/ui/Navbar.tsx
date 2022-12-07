@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
 import { UIContext } from "../../context";
 export const Navbar = () => {
   const { toggleSideMenu } = useContext(UIContext);
+  const router = useRouter();
   return (
     <div>
       <div className="flex justify-between px-8 py-6 md:px-20">
@@ -13,14 +15,35 @@ export const Navbar = () => {
             <span className="ml-1 text-md">| Shop</span>
           </Link>
         </div>
-        <div className="hidden space-x-4 md:inline-flex">
-          <Link className="border-black hover:border-b" href="/category/men">
+        <div className="items-center hidden space-x-4 md:inline-flex">
+          <Link
+            className={`${
+              router.pathname === "/category/men"
+                ? "bg-black text-white rounded-2xl px-2 py-1"
+                : "border-black hover:border-b"
+            }`}
+            href="/category/men"
+          >
             Mens
           </Link>
-          <Link className="border-black hover:border-b" href="/category/women">
+          <Link
+            className={`${
+              router.pathname === "/category/women"
+                ? "bg-black text-white rounded-2xl px-2 py-1"
+                : "border-black hover:border-b"
+            }`}
+            href="/category/women"
+          >
             Womens
           </Link>
-          <Link className="border-black hover:border-b" href="/category/kid">
+          <Link
+            className={`${
+              router.pathname === "/category/kid"
+                ? "bg-black text-white rounded-2xl px-2 py-1"
+                : "border-black hover:border-b"
+            }`}
+            href="/category/kid"
+          >
             Kids
           </Link>
         </div>
