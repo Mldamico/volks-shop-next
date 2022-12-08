@@ -20,7 +20,12 @@ const ProductPage: NextPage<Props> = ({ product }) => {
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div>
+        <div className="relative">
+          {product.inStock === 0 && (
+            <div className="absolute z-50 px-2 py-1 text-white bg-black top-5 left-5 rounded-2xl">
+              <p>No Products in stock</p>
+            </div>
+          )}
           <ProductSlideshow images={product.images} />
         </div>
         <div className="flex flex-col">
@@ -33,14 +38,15 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               selectedSize={product.sizes[0]}
               sizes={product.sizes}
             />
-
-            <button className="w-full py-2 text-white circular-btn bg-secondary">
-              Add To Cart
-            </button>
-
-            {/* <button className="w-full py-2 text-red-400 bg-white border-2 border-red-400 rounded-3xl hover:bg-red-400 hover:text-white">
-              No Products On Stock
-            </button> */}
+            {product.inStock > 0 ? (
+              <button className="w-full py-2 text-white circular-btn bg-secondary">
+                Add To Cart
+              </button>
+            ) : (
+              <button className="w-full py-2 text-red-400 bg-white border-2 border-red-400 rounded-3xl hover:bg-red-400 hover:text-white">
+                No Products In Stock
+              </button>
+            )}
 
             <div className="mt-3">
               <h2 className="font-bold">Description:</h2>

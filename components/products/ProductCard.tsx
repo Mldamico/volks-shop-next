@@ -26,13 +26,21 @@ export const ProductCard: FC<Props> = ({ product }) => {
     >
       <div>
         <Link href={`/product/${product.slug}`} prefetch={false}>
-          <Image
-            width={450}
-            height={400}
-            className="fadeIn"
-            src={productImage}
-            alt={product.title}
-          />
+          <div className="relative">
+            {product.inStock === 0 && (
+              <div className="absolute z-50 px-2 py-1 text-white bg-black top-5 left-5 rounded-2xl">
+                <p>No Products in stock</p>
+              </div>
+            )}
+
+            <Image
+              width={450}
+              height={400}
+              className="fadeIn"
+              src={productImage}
+              alt={product.title}
+            />
+          </div>
         </Link>
       </div>
       <div className="mt-1 fadeIn">
