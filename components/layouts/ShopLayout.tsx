@@ -3,7 +3,7 @@ import { FC, useContext, useState } from "react";
 import { Navbar, SideMenu } from "../ui";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
-import { UIContext } from "../../context";
+import { UIContext } from "../../context/ui";
 interface Props {
   title: string;
   pageDescription: string;

@@ -9,7 +9,7 @@ import { FiUsers } from "react-icons/fi";
 import { TbMoodKid } from "react-icons/tb";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { UIContext } from "../../context";
+import { UIContext } from "../../context/ui";
 import { useState } from "react";
 export const SideMenu = () => {
   const router = useRouter();

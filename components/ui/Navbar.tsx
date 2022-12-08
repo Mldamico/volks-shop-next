@@ -6,7 +6,7 @@ import {
   AiOutlineShoppingCart,
   AiOutlineCloseCircle,
 } from "react-icons/ai";
-import { UIContext } from "../../context";
+import { UIContext } from "../../context/ui";
 import { useState } from "react";
 
 export const Navbar = () => {

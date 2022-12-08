@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { UIProvider } from "../context";
 import { SWRConfig } from "swr";
+import { CartProvider, UIProvider } from "../context";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -11,9 +11,11 @@ export default function App({ Component, pageProps }: AppProps) {
           fetch(resource, init).then((res) => res.json()),
       }}
     >
-      <UIProvider>
-        <Component {...pageProps} />
-      </UIProvider>
+      <CartProvider>
+        <UIProvider>
+          <Component {...pageProps} />
+        </UIProvider>
+      </CartProvider>
     </SWRConfig>
   );
 }
