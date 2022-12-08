@@ -10,18 +10,34 @@ import { TbMoodKid } from "react-icons/tb";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { UIContext } from "../../context";
+import { useState } from "react";
 export const SideMenu = () => {
   const router = useRouter();
   const { toggleSideMenu } = useContext(UIContext);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = (url: string) => {
     toggleSideMenu();
     router.push(url);
   };
+
+  const onSearchTerm = () => {
+    if (searchTerm.trim().length === 0) return;
+
+    navigate(`/search/${searchTerm}`);
+  };
+
   return (
     <div className="flex flex-col mx-6 my-8">
       <div className="flex items-center border-b border-gray-500">
-        <input type="text" placeholder="Search..." className="outline-none" />
-        <AiOutlineSearch />
+        <input
+          type="text"
+          placeholder="Search..."
+          onKeyDown={(e) => (e.key === "Enter" ? onSearchTerm() : null)}
+          className="outline-none"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <AiOutlineSearch onClick={onSearchTerm} />
       </div>
 
       <div className="mx-2 my-10 space-y-6 text-lg">
