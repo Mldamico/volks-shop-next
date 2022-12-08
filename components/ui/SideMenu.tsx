@@ -15,6 +15,7 @@ export const SideMenu = () => {
   const router = useRouter();
   const { toggleSideMenu } = useContext(UIContext);
   const [searchTerm, setSearchTerm] = useState("");
+
   const navigate = (url: string) => {
     toggleSideMenu();
     router.push(url);
@@ -31,6 +32,7 @@ export const SideMenu = () => {
       <div className="flex items-center border-b border-gray-500">
         <input
           type="text"
+          autoFocus
           placeholder="Search..."
           onKeyDown={(e) => (e.key === "Enter" ? onSearchTerm() : null)}
           className="outline-none"

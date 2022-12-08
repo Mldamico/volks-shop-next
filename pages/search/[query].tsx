@@ -8,18 +8,23 @@ import { IProduct } from "../../interfaces/products";
 
 interface Props {
   products: IProduct[];
-  foundProduct: boolean;
+  foundProducts: boolean;
   query: string;
 }
 
-const SearchPage: NextPage<Props> = ({ products, foundProduct, query }) => {
+const SearchPage: NextPage<Props> = ({ products, foundProducts, query }) => {
+  console.log(foundProducts);
   return (
     <ShopLayout title="Volks Shop - Search" pageDescription="Search Products">
       <h1 className="text-4xl">Search Products</h1>
-      {foundProduct ? (
-        <h2 className="mb-1 text-2xl">Search: {query}</h2>
+      {foundProducts ? (
+        <h2 className="mb-1 text-2xl">
+          Search: {query.charAt(0).toUpperCase() + query.slice(1)}
+        </h2>
       ) : (
-        <h2 className="mb-1 text-2xl">No Products Found - {query}</h2>
+        <h2 className="mb-1 text-2xl">
+          No Products Found - {query.charAt(0).toUpperCase() + query.slice(1)}
+        </h2>
       )}
 
       <ProductList products={products} />
