@@ -1,22 +1,39 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import React from "react";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { ProductSlideshow, SizeSelector } from "../../components/products";
-import { FullScreenLoading, ItemCounter } from "../../components/ui";
-import { GetServerSideProps } from "next";
-import { useProducts } from "../../hooks";
-import { IProduct } from "../../interfaces/products";
+import { ItemCounter } from "../../components/ui";
+import { IProduct, ISize } from "../../interfaces/products";
 import { dbProducts } from "../../database";
 
 import { GetStaticPaths } from "next";
 
 import { GetStaticProps } from "next";
+import { useState } from "react";
+import { ICartProduct } from "../../interfaces";
 interface Props {
   product: IProduct;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    _id: product._id,
+    image: product.images[0],
+    price: product.price,
+    size: undefined,
+    slug: product.slug,
+    title: product.title,
+    gender: product.gender,
+    quantity: 1,
+  });
+
+  const onSelectedSize = (size: ISize) => {
+    setTempCartProduct((currentProduct) => ({
+      ...currentProduct,
+      size,
+    }));
+  };
+
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -35,12 +52,13 @@ const ProductPage: NextPage<Props> = ({ product }) => {
             <h3 className="font-bold">Amount:</h3>
             <ItemCounter />
             <SizeSelector
-              selectedSize={product.sizes[0]}
+              selectedSize={tempCartProduct.size}
               sizes={product.sizes}
+              onSelectedSize={onSelectedSize}
             />
             {product.inStock > 0 ? (
               <button className="w-full py-2 text-white circular-btn bg-secondary">
-                Add To Cart
+                {tempCartProduct.size ? "Add To Cart" : "Choose a size"}
               </button>
             ) : (
               <button className="w-full py-2 text-red-400 bg-white border-2 border-red-400 rounded-3xl hover:bg-red-400 hover:text-white">
