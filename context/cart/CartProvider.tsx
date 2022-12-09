@@ -39,6 +39,23 @@ export const CartProvider: FC<Props> = ({ children }) => {
     }
   }, [state.cart]);
 
+  useEffect(() => {
+    const numberOfItems = state.cart.reduce(
+      (prev, current) => current.quantity + prev,
+      0
+    );
+    const subtotal = state.cart.reduce(
+      (prev, current) => current.quantity * current.price + prev,
+      0
+    );
+    const taxRate = +process.env.NEXT_PUBLIC_TAX_RATE!;
+    const orderSummary = {
+      numberOfItems,
+      subtotal,
+      tax: subtotal * taxRate,
+    };
+  }, [state.cart]);
+
   const addProductToCart = (product: ICartProduct) => {
     const productInCart = state.cart.some((p) => p._id === product._id);
     if (!productInCart) {
