@@ -9,13 +9,17 @@ import { dbProducts } from "../../database";
 import { GetStaticPaths } from "next";
 
 import { GetStaticProps } from "next";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ICartProduct } from "../../interfaces";
+import { useRouter } from "next/router";
+import { CartContext } from "../../context/cart/CartContext";
 interface Props {
   product: IProduct;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+  const router = useRouter();
+  const { addProductToCart } = useContext(CartContext);
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     _id: product._id,
     image: product.images[0],
@@ -39,6 +43,13 @@ const ProductPage: NextPage<Props> = ({ product }) => {
       ...currentProduct,
       quantity: newQuantity,
     }));
+  };
+
+  const onAddProduct = () => {
+    if (!tempCartProduct.size) return;
+    addProductToCart(tempCartProduct);
+
+    router.push("/cart");
   };
 
   return (
@@ -68,7 +79,10 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               onSelectedSize={onSelectedSize}
             />
             {product.inStock > 0 ? (
-              <button className="w-full py-2 text-white circular-btn bg-secondary">
+              <button
+                className="w-full py-2 text-white circular-btn bg-secondary"
+                onClick={onAddProduct}
+              >
                 {tempCartProduct.size ? "Add To Cart" : "Choose a size"}
               </button>
             ) : (
