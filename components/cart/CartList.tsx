@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useContext } from "react";
-import { BsTypeH3 } from "react-icons/bs";
-import { initialData } from "../../database/products";
 import { ItemCounter } from "../ui";
 import { CartContext } from "../../context/cart/CartContext";
 import { ICartProduct } from "../../interfaces/cart";
