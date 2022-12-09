@@ -8,7 +8,7 @@ const CartPage = () => {
       <h1 className="text-3xl md:text-5xl">Cart</h1>
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div>
-          <CartList />
+          <CartList editable />
         </div>
         <div className="summary-card">
           <div className="flex flex-col justify-between h-full p-4">
