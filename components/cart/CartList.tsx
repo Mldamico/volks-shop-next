@@ -12,7 +12,8 @@ interface Props {
 }
 
 export const CartList: FC<Props> = ({ editable = false }) => {
-  const { cart, updateCartQuantity } = useContext(CartContext);
+  const { cart, updateCartQuantity, removeCartProduct } =
+    useContext(CartContext);
 
   const onNewCartQuantity = (
     product: ICartProduct,
@@ -21,6 +22,7 @@ export const CartList: FC<Props> = ({ editable = false }) => {
     product.quantity = newQuantityValue;
     updateCartQuantity(product);
   };
+
   return (
     <>
       {cart.map((product) => (
@@ -61,7 +63,14 @@ export const CartList: FC<Props> = ({ editable = false }) => {
           </div>
           <div className="flex flex-col items-center">
             <h3 className="text-lg">${product.price}</h3>
-            {editable && <button className="text-[#325AD0]">Remove</button>}
+            {editable && (
+              <button
+                onClick={() => removeCartProduct(product)}
+                className="text-[#325AD0]"
+              >
+                Remove
+              </button>
+            )}
           </div>
         </div>
       ))}
