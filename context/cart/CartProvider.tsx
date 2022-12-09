@@ -4,10 +4,18 @@ import { CartContext, cartReducer } from "./";
 import Cookie from "js-cookie";
 export interface CartState {
   cart: ICartProduct[];
+  numberOfItems: number;
+  subtotal: number;
+  tax: number;
+  total: number;
 }
 
 const CART_INITIAL_STATE: CartState = {
   cart: [],
+  numberOfItems: 0,
+  subtotal: 0,
+  tax: 0,
+  total: 0,
 };
 
 type Props = {
@@ -53,7 +61,10 @@ export const CartProvider: FC<Props> = ({ children }) => {
       numberOfItems,
       subtotal,
       tax: subtotal * taxRate,
+      total: subtotal * (taxRate + 1),
     };
+
+    dispatch({ type: "Cart - Update Order Summary", payload: orderSummary });
   }, [state.cart]);
 
   const addProductToCart = (product: ICartProduct) => {

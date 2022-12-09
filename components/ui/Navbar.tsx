@@ -8,9 +8,11 @@ import {
 } from "react-icons/ai";
 import { UIContext } from "../../context/ui";
 import { useState } from "react";
+import { CartContext } from "../../context/cart/CartContext";
 
 export const Navbar = () => {
   const { toggleSideMenu } = useContext(UIContext);
+  const { numberOfItems } = useContext(CartContext);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -67,7 +69,7 @@ export const Navbar = () => {
           </Link>
         </div>
 
-        <div className="flex items-center space-x-2 text-md ">
+        <div className="flex items-center space-x-4 text-md ">
           {isSearchVisible ? (
             <div className="hidden md:inline-flex fadeIn">
               <input
@@ -97,7 +99,18 @@ export const Navbar = () => {
             onClick={toggleSideMenu}
           />
           <Link href="/cart">
-            <AiOutlineShoppingCart size={24} />
+            <div className="relative">
+              <div className="absolute z-50 px-2 text-sm font-light text-white rounded-full bg-secondary -top-2 -right-3 ">
+                <span>
+                  {numberOfItems > 9 ? (
+                    <span className="text-xs">9+</span>
+                  ) : (
+                    numberOfItems
+                  )}{" "}
+                </span>
+              </div>
+              <AiOutlineShoppingCart size={24} />
+            </div>
           </Link>
           <button
             className="px-2 py-1 text-white bg-black rounded-2xl"

@@ -17,6 +17,15 @@ type CartAction =
   | {
       type: "Cart - Delete Product";
       payload: ICartProduct;
+    }
+  | {
+      type: "Cart - Update Order Summary";
+      payload: {
+        numberOfItems: number;
+        subtotal: number;
+        tax: number;
+        total: number;
+      };
     };
 
 export const cartReducer = (
@@ -53,6 +62,12 @@ export const cartReducer = (
             product.size === action.payload.size
           );
         }),
+      };
+    }
+    case "Cart - Update Order Summary": {
+      return {
+        ...state,
+        ...action.payload,
       };
     }
     default:
