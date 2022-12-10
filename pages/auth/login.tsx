@@ -5,12 +5,16 @@ import { volksApi } from "../../api";
 import { AuthLayout } from "../../components/layouts";
 import { validations } from "../../utils";
 import { BiErrorCircle } from "react-icons/bi";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context";
+import { useRouter } from "next/router";
 type FormData = {
   email: string;
   password: string;
 };
 const LoginPage = () => {
+  const router = useRouter();
+  const { loginUser } = useContext(AuthContext);
   const [showError, setShowError] = useState(false);
   const {
     register,
@@ -20,17 +24,16 @@ const LoginPage = () => {
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
-    try {
-      const { data } = await volksApi.post("/user/login", { email, password });
-      const { token, user } = data;
-      console.log({ token, user });
-    } catch (error) {
+    const isValidLogin = await loginUser(email, password);
+
+    if (!isValidLogin) {
       setShowError(true);
-      console.log(error);
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+      return;
     }
+    router.replace("/");
   };
   return (
     <AuthLayout title="Login">
