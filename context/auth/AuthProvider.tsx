@@ -1,4 +1,4 @@
-import { FC, useReducer } from "react";
+import { FC, useReducer, useEffect } from "react";
 import { AuthContext, authReducer } from "./";
 import { IUser } from "../../interfaces/user";
 import { volksApi } from "../../api";
@@ -20,6 +20,21 @@ type Props = {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const checkToken = async () => {
+    try {
+      const { data } = await volksApi.get("/user/validate-token");
+      const { token, user } = data;
+      Cookies.set("token", token);
+      dispatch({ type: "Auth - Login", payload: user });
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
 
   const loginUser = async (email: string, password: string) => {
     try {
