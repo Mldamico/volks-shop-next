@@ -6,6 +6,10 @@
   @apply w-full p-2 bg-gray-200 border-b-2 border-black outline-none;
 }
 
+.input-error {
+  @apply w-full p-2 text-red-500 bg-red-100 border-b-2 border-red-500 outline-none placeholder:text-red-500;
+}
+
 .button-secondary {
   @apply w-full py-2 my-2 font-bold text-white circular-btn bg-secondary;
 }

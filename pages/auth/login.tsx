@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { AuthLayout } from "../../components/layouts";
+import { validations } from "../../utils";
 
 type FormData = {
   email: string;
@@ -19,7 +20,7 @@ const LoginPage = () => {
   };
   return (
     <AuthLayout title="Login">
-      <form onSubmit={handleSubmit(onLoginUser)}>
+      <form onSubmit={handleSubmit(onLoginUser)} noValidate>
         <div className="w-[350px] px-10 py-5">
           <h1 className="text-3xl md:text-4xl">Sign In</h1>
           <div className="my-4 space-y-4">
@@ -29,9 +30,15 @@ const LoginPage = () => {
                 type="email"
                 id="email"
                 placeholder="Email"
-                className="input"
-                {...register("email")}
+                className={!!errors.email ? "input-error" : "input"}
+                {...register("email", {
+                  required: "Field is required",
+                  validate: validations.isEmail,
+                })}
               />
+              <p className="px-4 text-sm text-red-500">
+                {errors.email?.message}
+              </p>
             </div>
             <div>
               <label htmlFor="password">Password</label>
@@ -39,9 +46,18 @@ const LoginPage = () => {
                 type="password"
                 id="password"
                 placeholder="Password"
-                className="input"
-                {...register("password")}
+                className={!!errors.password ? "input-error" : "input"}
+                {...register("password", {
+                  required: "Field is required",
+                  minLength: {
+                    value: 6,
+                    message: "Should be have at least 6 characters",
+                  },
+                })}
               />
+              <p className="px-4 text-sm text-red-500">
+                {errors.password?.message}
+              </p>
             </div>
           </div>
           <div>
