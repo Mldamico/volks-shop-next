@@ -1,11 +1,13 @@
 import Link from "next/link";
 import React from "react";
 import { AuthLayout } from "../../components/layouts";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { volksApi } from "../../api";
 import { BiErrorCircle } from "react-icons/bi";
 import { validations } from "../../utils";
+import { AuthContext } from "../../context/auth/AuthContext";
+import { useRouter } from "next/router";
 
 type FormData = {
   name: string;
@@ -13,7 +15,10 @@ type FormData = {
   password: string;
 };
 const RegisterPage = () => {
+  const router = useRouter();
+  const { registerUser } = useContext(AuthContext);
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const {
     register,
     handleSubmit,
@@ -21,21 +26,18 @@ const RegisterPage = () => {
   } = useForm<FormData>();
   const onRegisterForm = async ({ name, email, password }: FormData) => {
     setShowError(false);
-    try {
-      const { data } = await volksApi.post("/user/register", {
-        name,
-        email,
-        password,
-      });
-      const { token, user } = data;
-      console.log({ token, user });
-    } catch (error) {
+    const { hasError, message } = await registerUser(name, email, password);
+
+    if (hasError) {
       setShowError(true);
-      console.log(error);
+      setErrorMessage(message!);
       setTimeout(() => {
         setShowError(false);
       }, 3000);
+      return;
     }
+
+    router.replace("/");
   };
   return (
     <AuthLayout title="Register">

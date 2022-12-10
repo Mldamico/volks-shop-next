@@ -3,6 +3,7 @@ import { AuthContext, authReducer } from "./";
 import { IUser } from "../../interfaces/user";
 import { volksApi } from "../../api";
 import Cookies from "js-cookie";
+import axios from "axios";
 export interface AuthState {
   isLoggedIn: boolean;
   user?: IUser;
@@ -32,11 +33,43 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const registerUser = async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<{ hasError: boolean; message?: string }> => {
+    try {
+      const { data } = await volksApi.post("/user/register", {
+        name,
+        email,
+        password,
+      });
+      const { token, user } = data;
+      Cookies.set("token", token);
+      dispatch({ type: "Auth - Login", payload: user });
+      return {
+        hasError: false,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          hasError: true,
+          message: error.response?.data.message,
+        };
+      }
+      return {
+        hasError: true,
+        message: "Failed create an user",
+      };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
         ...state,
         loginUser,
+        registerUser,
       }}
     >
       {children}
