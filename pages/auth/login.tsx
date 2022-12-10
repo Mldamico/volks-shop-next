@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { volksApi } from "../../api";
 import { AuthLayout } from "../../components/layouts";
 import { validations } from "../../utils";
 
@@ -15,8 +16,14 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onLoginUser = (data: FormData) => {
-    console.log(data);
+  const onLoginUser = async ({ email, password }: FormData) => {
+    try {
+      const { data } = await volksApi.post("/user/login", { email, password });
+      const { token, user } = data;
+      console.log({ token, user });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <AuthLayout title="Login">
