@@ -34,7 +34,10 @@ const CartPage = () => {
               <OrderSummary />
             </div>
             <div className="mt-3">
-              <button className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn">
+              <button
+                className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn"
+                onClick={() => router.push("/checkout/address")}
+              >
                 Checkout
               </button>
             </div>
