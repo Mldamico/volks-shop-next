@@ -11,7 +11,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { UIContext } from "../../context/ui";
 import { useState } from "react";
+import { AuthContext } from "../../context/auth/AuthContext";
 export const SideMenu = () => {
+  const { user, isLoggedIn } = useContext(AuthContext);
   const router = useRouter();
   const { toggleSideMenu } = useContext(UIContext);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,14 +45,18 @@ export const SideMenu = () => {
       </div>
 
       <div className="mx-2 my-10 space-y-6 text-lg">
-        <div className="flex items-center space-x-8">
-          <CgProfile size={24} />
-          <div>Profile</div>
-        </div>
-        <div className="flex items-center space-x-8">
-          <IoTicketSharp size={24} />
-          <div>Orders</div>
-        </div>
+        {isLoggedIn && (
+          <>
+            <div className="flex items-center space-x-8">
+              <CgProfile size={24} />
+              <div>Profile</div>
+            </div>
+            <div className="flex items-center space-x-8">
+              <IoTicketSharp size={24} />
+              <div>Orders</div>
+            </div>
+          </>
+        )}
         <div className="flex items-center space-x-8 cursor-pointer">
           <AiOutlineMan size={24} />
           <p onClick={() => navigate("/category/men")}>Men</p>
@@ -63,33 +69,39 @@ export const SideMenu = () => {
           <TbMoodKid size={24} />
           <p onClick={() => navigate("/category/kid")}>Kid</p>
         </div>
-        <div className="flex items-center space-x-8">
-          <BsFillKeyFill size={24} />
-          <div>Login</div>
-        </div>
-        <div className="flex items-center space-x-8">
-          <GiExitDoor size={24} />
-          <div>Sign Out</div>
-        </div>
+        {!isLoggedIn && (
+          <div className="flex items-center space-x-8">
+            <BsFillKeyFill size={24} />
+            <div>Login</div>
+          </div>
+        )}
+        {isLoggedIn && (
+          <div className="flex items-center space-x-8">
+            <GiExitDoor size={24} />
+            <div>Sign Out</div>
+          </div>
+        )}
       </div>
       <hr />
-      <div className="mt-4">
-        <h5>Admin Panel</h5>
-        <div className="mx-2 my-10 space-y-6 text-lg">
-          <div className="flex items-center space-x-8">
-            <FaProductHunt size={24} />
-            <div>Products</div>
-          </div>
-          <div className="flex items-center space-x-8">
-            <IoTicketSharp size={24} />
-            <div>Orders</div>
-          </div>
-          <div className="flex items-center space-x-8">
-            <FiUsers size={24} />
-            <div>USers</div>
+      {user?.role === "admin" && (
+        <div className="mt-4">
+          <h5>Admin Panel</h5>
+          <div className="mx-2 my-10 space-y-6 text-lg">
+            <div className="flex items-center space-x-8">
+              <FaProductHunt size={24} />
+              <div>Products</div>
+            </div>
+            <div className="flex items-center space-x-8">
+              <IoTicketSharp size={24} />
+              <div>Orders</div>
+            </div>
+            <div className="flex items-center space-x-8">
+              <FiUsers size={24} />
+              <div>USers</div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
