@@ -43,14 +43,6 @@ const AddressPage = () => {
   });
 
   const onAddressForm = (data: FormData) => {
-    Cookies.set("firstName", data.firstName);
-    Cookies.set("lastName", data.lastName);
-    Cookies.set("address", data.address);
-    Cookies.set("address2", data.address2 || "");
-    Cookies.set("zip", data.zip);
-    Cookies.set("city", data.city);
-    Cookies.set("country", data.country);
-    Cookies.set("phone", data.phone);
     updateAddress(data);
     router.push("/checkout/summary");
   };
@@ -147,6 +139,7 @@ const AddressPage = () => {
             <label htmlFor="pais">Pais</label>
             <select
               id="pais"
+              value={Cookies.get("country") || countries[0].code}
               className={!!errors.country ? "input-error" : "input"}
               {...register("country", {
                 required: "Field is required",
