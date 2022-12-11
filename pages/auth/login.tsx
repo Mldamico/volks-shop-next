@@ -88,7 +88,14 @@ const LoginPage = () => {
             <button type="submit" className="button-secondary">
               Login
             </button>
-            <Link href={"/auth/register"} className="underline ">
+            <Link
+              href={
+                router.query.q
+                  ? `/auth/register?p=${router.query.p}`
+                  : "/auth/register"
+              }
+              className="underline "
+            >
               Don't have an account?
             </Link>
           </div>

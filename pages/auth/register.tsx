@@ -37,7 +37,8 @@ const RegisterPage = () => {
       return;
     }
 
-    router.replace("/");
+    const destination = router.query.p?.toString() || "/";
+    router.replace(destination);
   };
   return (
     <AuthLayout title="Register">
@@ -99,7 +100,14 @@ const RegisterPage = () => {
           </div>
           <div>
             <button className="button-secondary">Register</button>
-            <Link href={"/auth/login"} className="underline ">
+            <Link
+              href={
+                router.query.p
+                  ? `/auth/login?p=${router.query.p}`
+                  : "/auth/login"
+              }
+              className="underline "
+            >
               Have an account?
             </Link>
           </div>
