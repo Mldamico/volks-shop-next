@@ -12,8 +12,9 @@ import { useRouter } from "next/router";
 import { UIContext } from "../../context/ui";
 import { useState } from "react";
 import { AuthContext } from "../../context/auth/AuthContext";
+import Cookies from "js-cookie";
 export const SideMenu = () => {
-  const { user, isLoggedIn } = useContext(AuthContext);
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
   const router = useRouter();
   const { toggleSideMenu } = useContext(UIContext);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,13 +71,19 @@ export const SideMenu = () => {
           <p onClick={() => navigate("/category/kid")}>Kid</p>
         </div>
         {!isLoggedIn && (
-          <div className="flex items-center space-x-8">
+          <div
+            className="flex items-center space-x-8 cursor-pointer"
+            onClick={() => navigate(`/auth/login?p=${router.asPath}`)}
+          >
             <BsFillKeyFill size={24} />
             <div>Login</div>
           </div>
         )}
         {isLoggedIn && (
-          <div className="flex items-center space-x-8">
+          <div
+            className="flex items-center space-x-8 cursor-pointer"
+            onClick={logout}
+          >
             <GiExitDoor size={24} />
             <div>Sign Out</div>
           </div>
