@@ -1,8 +1,24 @@
 import React from "react";
 import { CartList, OrderSummary } from "../../components/cart";
 import { ShopLayout } from "../../components/layouts";
+import { useContext, useEffect } from "react";
+import { CartContext } from "../../context/";
+import { useRouter } from "next/router";
+import { FullScreenLoading } from "../../components/ui";
 
 const CartPage = () => {
+  const { isLoaded, cart } = useContext(CartContext);
+  const router = useRouter();
+  useEffect(() => {
+    if (isLoaded && cart.length === 0) {
+      router.replace("/cart/empty");
+    }
+  }, [isLoaded, cart, router]);
+
+  if (!isLoaded || cart.length === 0) {
+    return <></>;
+  }
+
   return (
     <ShopLayout title="Cart" pageDescription="Cart Store">
       <h1 className="text-3xl md:text-5xl">Cart</h1>
