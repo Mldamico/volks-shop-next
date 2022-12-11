@@ -3,6 +3,7 @@ import { ShopLayout } from "../../components/layouts";
 import { countries } from "../../utils/countries";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
 
 type FormData = {
   firstName: string;
@@ -15,16 +16,39 @@ type FormData = {
   phone: string;
 };
 
+const getAddressFromCooies = (): FormData => {
+  return {
+    firstName: Cookies.get("firstName") || "",
+    lastName: Cookies.get("lastName") || "",
+    address: Cookies.get("address") || "",
+    address2: Cookies.get("address2") || "",
+    zip: Cookies.get("zip") || "",
+    city: Cookies.get("city") || "",
+    country: Cookies.get("country") || "",
+    phone: Cookies.get("phone") || "",
+  };
+};
+
 const AddressPage = () => {
   const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    defaultValues: getAddressFromCooies(),
+  });
 
   const onAddressForm = (data: FormData) => {
-    console.log(data);
+    Cookies.set("firstName", data.firstName);
+    Cookies.set("lastName", data.lastName);
+    Cookies.set("address", data.address);
+    Cookies.set("address2", data.address2 || "");
+    Cookies.set("zip", data.zip);
+    Cookies.set("city", data.city);
+    Cookies.set("country", data.country);
+    Cookies.set("phone", data.phone);
+    router.push("/checkout/summary");
   };
   return (
     <ShopLayout title="Address" pageDescription="Confirm Address">
@@ -46,6 +70,9 @@ const AddressPage = () => {
                 },
               })}
             />
+            <p className="px-4 text-sm text-red-500">
+              {errors.firstName?.message}
+            </p>
           </div>
           <div>
             <label htmlFor="lastname">Last Name</label>
@@ -62,6 +89,9 @@ const AddressPage = () => {
                 },
               })}
             />
+            <p className="px-4 text-sm text-red-500">
+              {errors.lastName?.message}
+            </p>
           </div>
           <div>
             <label htmlFor="address">Address</label>
@@ -78,6 +108,9 @@ const AddressPage = () => {
                 },
               })}
             />
+            <p className="px-4 text-sm text-red-500">
+              {errors.address?.message}
+            </p>
           </div>
           <div>
             <label htmlFor="address2">Address 2</label>
@@ -86,13 +119,7 @@ const AddressPage = () => {
               type="text"
               placeholder="Address 2"
               className={!!errors.address2 ? "input-error" : "input"}
-              {...register("address2", {
-                required: "Field is required",
-                minLength: {
-                  value: 2,
-                  message: "Should be have at least 2 characters",
-                },
-              })}
+              {...register("address2")}
             />
           </div>
           <div>
@@ -110,6 +137,7 @@ const AddressPage = () => {
                 },
               })}
             />
+            <p className="px-4 text-sm text-red-500">{errors.zip?.message}</p>
           </div>
           <div>
             <label htmlFor="pais">Pais</label>
@@ -130,6 +158,9 @@ const AddressPage = () => {
                 </option>
               ))}
             </select>
+            <p className="px-4 text-sm text-red-500">
+              {errors.country?.message}
+            </p>
           </div>
           <div>
             <label htmlFor="city">City</label>
@@ -146,6 +177,7 @@ const AddressPage = () => {
                 },
               })}
             />
+            <p className="px-4 text-sm text-red-500">{errors.city?.message}</p>
           </div>
           <div>
             <label htmlFor="tel">Tel. Number</label>
@@ -162,6 +194,7 @@ const AddressPage = () => {
                 },
               })}
             />
+            <p className="px-4 text-sm text-red-500">{errors.phone?.message}</p>
           </div>
         </div>
 
