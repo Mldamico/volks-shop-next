@@ -5,6 +5,7 @@ import { volksApi } from "../../api";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 export interface AuthState {
   isLoggedIn: boolean;
   user?: IUser;
@@ -21,10 +22,18 @@ type Props = {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+  const { data, status } = useSession();
+
   const router = useRouter();
+  // useEffect(() => {
+  //   checkToken();
+  // }, []);
+
   useEffect(() => {
-    checkToken();
-  }, []);
+    if (status === "authenticated") {
+      dispatch({ type: "Auth - Login", payload: data?.user as IUser });
+    }
+  }, [status, data]);
 
   const checkToken = async () => {
     if (!Cookies.get("token")) return;

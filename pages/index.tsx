@@ -1,5 +1,3 @@
-import Image from "next/image";
-import useSWR from "swr";
 import { ShopLayout } from "../components/layouts";
 import { ProductList } from "../components/products";
 import { FullScreenLoading } from "../components/ui";
@@ -7,6 +5,7 @@ import { useProducts } from "../hooks";
 
 export default function HomePage() {
   const { products, isError, isLoading } = useProducts("/products");
+
   if (isError) return <div>Failed To load</div>;
 
   return (
