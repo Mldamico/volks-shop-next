@@ -40,6 +40,10 @@ export default nextAuth({
             token.user = user;
             break;
           case "oauth":
+            token.user = await dbUsers.oauthDbUser(
+              user?.email || "",
+              user?.name || ""
+            );
             break;
         }
       }
