@@ -92,7 +92,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
   const logout = () => {
     // Cookies.remove("token");
-    Cookies.remove("cart");
+    // Cookies.remove("cart");
     Cookies.remove("firstName");
     Cookies.remove("lastName");
     Cookies.remove("address");

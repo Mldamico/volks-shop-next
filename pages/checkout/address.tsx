@@ -2,9 +2,9 @@ import React from "react";
 import { ShopLayout } from "../../components/layouts";
 import { countries } from "../../utils/countries";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Cookies from "js-cookie";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/cart/CartContext";
 
 type FormData = {
@@ -37,10 +37,16 @@ const AddressPage = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     defaultValues: getAddressFromCooies(),
   });
+
+  useEffect(() => {
+    reset(getAddressFromCooies());
+  }, [reset]);
 
   const onAddressForm = (data: FormData) => {
     updateAddress(data);
@@ -136,25 +142,25 @@ const AddressPage = () => {
             <p className="px-4 text-sm text-red-500">{errors.zip?.message}</p>
           </div>
           <div>
-            <label htmlFor="pais">Pais</label>
-            <select
-              id="pais"
-              value={Cookies.get("country") || countries[0].code}
-              className={!!errors.country ? "input-error" : "input"}
-              {...register("country", {
-                required: "Field is required",
-                minLength: {
-                  value: 2,
-                  message: "Should be have at least 2 characters",
-                },
-              })}
-            >
-              {countries.map((country) => (
-                <option key={country.code} value={country.code}>
-                  {country.name}
-                </option>
-              ))}
-            </select>
+            <label htmlFor="country">Country</label>
+            <Controller
+              name="country"
+              control={control}
+              rules={{ required: "Field is required" }}
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className={!!errors.country ? "input-error" : "input"}
+                >
+                  {countries.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            />
+
             <p className="px-4 text-sm text-red-500">
               {errors.country?.message}
             </p>

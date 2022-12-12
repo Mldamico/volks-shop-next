@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ShopLayout } from "../../components/layouts";
 import { CartList } from "../../components/cart/CartList";
 import { OrderSummary } from "../../components/cart/OrderSummary";
@@ -7,9 +7,18 @@ import { useContext } from "react";
 import { CartContext } from "../../context/cart/CartContext";
 import { capitalize } from "../../utils";
 import { countries } from "../../utils/countries";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const SummaryPage = () => {
+  const router = useRouter();
   const { shippingAddress, numberOfItems } = useContext(CartContext);
+  useEffect(() => {
+    if (!Cookies.get("firstName")) {
+      router.push("/checkout/address");
+    }
+  }, [router]);
+
   if (!shippingAddress) {
     return <></>;
   }
