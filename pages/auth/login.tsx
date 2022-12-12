@@ -1,14 +1,13 @@
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { volksApi } from "../../api";
 import { AuthLayout } from "../../components/layouts";
 import { validations } from "../../utils";
 import { BiErrorCircle } from "react-icons/bi";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context";
 import { useRouter } from "next/router";
-import { getSession, signIn } from "next-auth/react";
+import { getSession, signIn, getProviders } from "next-auth/react";
 import { GetServerSideProps } from "next";
 
 type FormData = {
@@ -19,11 +18,18 @@ const LoginPage = () => {
   const router = useRouter();
   const { loginUser } = useContext(AuthContext);
   const [showError, setShowError] = useState(false);
+  const [providers, setProviders] = useState<any>({});
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
+
+  useEffect(() => {
+    getProviders().then((prov) => {
+      setProviders(prov);
+    });
+  }, []);
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
@@ -42,8 +48,8 @@ const LoginPage = () => {
   };
   return (
     <AuthLayout title="Login">
-      <form onSubmit={handleSubmit(onLoginUser)} noValidate>
-        <div className="w-[350px] px-10 py-5">
+      <div className="w-[350px] px-10 py-5">
+        <form onSubmit={handleSubmit(onLoginUser)} noValidate>
           <h1 className="text-3xl md:text-4xl">Sign In</h1>
           {showError && (
             <div className="flex items-center px-4 py-2 my-2 space-x-4 text-white bg-red-500 rounded-3xl">
@@ -103,8 +109,24 @@ const LoginPage = () => {
               Don't have an account?
             </Link>
           </div>
+        </form>
+        <div className="my-2">
+          <hr />
+          {Object.values(providers).map((provider: any) => {
+            if (provider.id === "credentials")
+              return <div key="credentials"></div>;
+            return (
+              <button
+                key={provider.id}
+                className="flex flex-col items-center w-full py-1 mb-1 border rounded-xl"
+                onClick={() => signIn(provider.id)}
+              >
+                {provider.name}
+              </button>
+            );
+          })}
         </div>
-      </form>
+      </div>
     </AuthLayout>
   );
 };
