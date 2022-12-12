@@ -30,6 +30,15 @@ export default nextAuth({
       },
     }),
   ],
+  session: {
+    maxAge: 2592000,
+    strategy: "jwt",
+    updateAge: 86400,
+  },
+  pages: {
+    signIn: "/auth/login",
+    newUser: "/auth/register",
+  },
   callbacks: {
     async jwt({ token, account, user }) {
       console.log({ token, account, user });

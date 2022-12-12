@@ -3,11 +3,12 @@ import React from "react";
 import { AuthLayout } from "../../components/layouts";
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { volksApi } from "../../api";
 import { BiErrorCircle } from "react-icons/bi";
 import { validations } from "../../utils";
 import { AuthContext } from "../../context/auth/AuthContext";
 import { useRouter } from "next/router";
+import { getSession, signIn } from "next-auth/react";
+import { GetServerSideProps } from "next";
 
 type FormData = {
   name: string;
@@ -37,8 +38,9 @@ const RegisterPage = () => {
       return;
     }
 
-    const destination = router.query.p?.toString() || "/";
-    router.replace(destination);
+    // const destination = router.query.p?.toString() || "/";
+    // router.replace(destination);
+    await signIn("credentials", { email, password });
   };
   return (
     <AuthLayout title="Register">
@@ -115,6 +117,26 @@ const RegisterPage = () => {
       </form>
     </AuthLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const session = await getSession({ req });
+  const { p = "/" } = query;
+  if (session) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default RegisterPage;

@@ -8,6 +8,9 @@ import { BiErrorCircle } from "react-icons/bi";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context";
 import { useRouter } from "next/router";
+import { getSession, signIn } from "next-auth/react";
+import { GetServerSideProps } from "next";
+
 type FormData = {
   email: string;
   password: string;
@@ -24,17 +27,18 @@ const LoginPage = () => {
 
   const onLoginUser = async ({ email, password }: FormData) => {
     setShowError(false);
-    const isValidLogin = await loginUser(email, password);
+    // const isValidLogin = await loginUser(email, password);
 
-    if (!isValidLogin) {
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 3000);
-      return;
-    }
-    const destination = router.query.p?.toString() || "/";
-    router.replace(destination);
+    // if (!isValidLogin) {
+    //   setShowError(true);
+    //   setTimeout(() => {
+    //     setShowError(false);
+    //   }, 3000);
+    //   return;
+    // }
+    // const destination = router.query.p?.toString() || "/";
+    // router.replace(destination);
+    await signIn("credentials", { email, password });
   };
   return (
     <AuthLayout title="Login">
@@ -103,6 +107,26 @@ const LoginPage = () => {
       </form>
     </AuthLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const session = await getSession({ req });
+  const { p = "/" } = query;
+  if (session) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default LoginPage;
