@@ -9,7 +9,6 @@ export async function middleware(req: NextRequest) {
       secret: process.env.NEXTAUTH_SECRET,
     });
 
-    console.log({ session });
     const { protocol, host, pathname } = req.nextUrl;
     if (!session) {
       return NextResponse.redirect(

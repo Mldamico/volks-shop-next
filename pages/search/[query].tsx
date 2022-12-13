@@ -13,7 +13,6 @@ interface Props {
 }
 
 const SearchPage: NextPage<Props> = ({ products, foundProducts, query }) => {
-  console.log(foundProducts);
   return (
     <ShopLayout title="Volks Shop - Search" pageDescription="Search Products">
       <h1 className="text-4xl">Search Products</h1>
