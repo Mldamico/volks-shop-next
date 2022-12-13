@@ -1,4 +1,5 @@
 import { IUser } from "./user";
+import { ISize } from "./products";
 export interface IOrder {
   _id?: string;
   user?: IUser | string;
@@ -16,8 +17,9 @@ export interface IOrder {
 export interface IOrderItem {
   _id: string;
   title: string;
-  size: string;
+  size: ISize;
   quantity: number;
+  gender: string;
   slug: string;
   image: string;
   price: number;

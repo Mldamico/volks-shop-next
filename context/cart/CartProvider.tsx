@@ -2,6 +2,8 @@ import { FC, useEffect, useReducer } from "react";
 import { ICartProduct, ShippingAddress } from "../../interfaces";
 import { CartContext, cartReducer } from "./";
 import Cookie from "js-cookie";
+import { volksApi } from "../../api";
+import { IOrder } from "../../interfaces/order";
 export interface CartState {
   cart: ICartProduct[];
   numberOfItems: number;
@@ -146,6 +148,30 @@ export const CartProvider: FC<Props> = ({ children }) => {
     dispatch({ type: "Cart - Update Address", payload: address });
   };
 
+  const createOrder = async () => {
+    if (!state.shippingAddress) {
+      throw new Error("There is no shipping address");
+    }
+    const body: IOrder = {
+      orderItems: state.cart.map((p) => ({
+        ...p,
+        size: p.size!,
+      })),
+      shippingAddress: state.shippingAddress,
+      numberOfItems: state.numberOfItems,
+      subtotal: state.subtotal,
+      tax: state.tax,
+      total: state.total,
+      isPaid: false,
+    };
+    try {
+      const { data } = await volksApi.post("/orders", body);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -154,6 +180,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
         updateCartQuantity,
         removeCartProduct,
         updateAddress,
+        createOrder,
       }}
     >
       {children}
