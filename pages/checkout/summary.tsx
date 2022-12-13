@@ -12,12 +12,17 @@ import { useRouter } from "next/router";
 
 const SummaryPage = () => {
   const router = useRouter();
-  const { shippingAddress, numberOfItems } = useContext(CartContext);
+  const { shippingAddress, numberOfItems, createOrder } =
+    useContext(CartContext);
   useEffect(() => {
     if (!Cookies.get("firstName")) {
       router.push("/checkout/address");
     }
   }, [router]);
+
+  const onCreateOrder = () => {
+    createOrder();
+  };
 
   if (!shippingAddress) {
     return <></>;
@@ -68,7 +73,10 @@ const SummaryPage = () => {
               <OrderSummary />
             </div>
             <div className="mt-3">
-              <button className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn">
+              <button
+                onClick={onCreateOrder}
+                className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn"
+              >
                 Confirm Order
               </button>
             </div>
