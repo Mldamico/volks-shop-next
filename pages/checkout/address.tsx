@@ -41,7 +41,16 @@ const AddressPage = () => {
     formState: { errors },
     reset,
   } = useForm<FormData>({
-    defaultValues: getAddressFromCooies(),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      address: "",
+      address2: "",
+      zip: "",
+      city: "",
+      country: countries[1].code,
+      phone: "",
+    },
   });
 
   useEffect(() => {
