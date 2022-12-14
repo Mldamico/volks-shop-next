@@ -52,7 +52,10 @@ export const SideMenu = () => {
               <CgProfile size={24} />
               <div>Profile</div>
             </div>
-            <div className="flex items-center space-x-8">
+            <div
+              className="flex items-center space-x-8 cursor-pointer"
+              onClick={() => navigate("/orders/history")}
+            >
               <IoTicketSharp size={24} />
               <div>Orders</div>
             </div>

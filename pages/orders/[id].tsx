@@ -2,9 +2,19 @@ import React from "react";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { CartList } from "../../components/cart/CartList";
 import Link from "next/link";
+import { GetServerSideProps, NextPage } from "next";
 import { OrderSummary } from "../../components/cart/OrderSummary";
 import { CiCreditCardOff, CiCreditCard1 } from "react-icons/ci";
-const OrderPage = () => {
+import { getSession } from "next-auth/react";
+import { dbOrders } from "../../database";
+import { IOrder } from "../../interfaces/order";
+
+interface Props {
+  order: IOrder;
+}
+
+const OrderPage: NextPage<Props> = ({ order }) => {
+  console.log(order);
   return (
     <ShopLayout title="Order no. 9999" pageDescription="Order">
       <h1 className="text-3xl md:text-5xl">Order: ABC111</h1>
@@ -67,3 +77,44 @@ const OrderPage = () => {
 };
 
 export default OrderPage;
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const { id = "" } = query;
+  const session: any = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: `/auth/login?p=orders/${id}`,
+        permanent: false,
+      },
+    };
+  }
+
+  const order = await dbOrders.getOrdersById(id.toString());
+  if (!order) {
+    return {
+      redirect: {
+        destination: `orders/history`,
+        permanent: false,
+      },
+    };
+  }
+
+  if (order.user !== session.user._id) {
+    return {
+      redirect: {
+        destination: `orders/history`,
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {
+      order,
+    },
+  };
+};
