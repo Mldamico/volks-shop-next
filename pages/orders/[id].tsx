@@ -64,18 +64,30 @@ const OrderPage: NextPage<Props> = ({ order }) => {
               <p>{shippingAddress.phone}</p>
               <hr className="my-2" />
 
-              <OrderSummary />
+              <OrderSummary
+                orderValues={{
+                  numberOfItems: order.numberOfItems,
+                  subtotal: order.subtotal,
+                  total: order.total,
+                  tax: order.tax,
+                }}
+              />
             </div>
-            <div className="mt-3">
-              {/* <button className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn">
-                Confirm Order
-              </button> */}
-              <div className="flex items-center px-4 my-2 space-x-4 text-green-500 border-2 border-green-500 rounded-2xl w-fit">
-                <CiCreditCard1 size={24} />
-                <div>
-                  <h3>Order have been paid</h3>
+            <div className="flex flex-col mt-3">
+              {order.isPaid ? (
+                <div className="flex items-center px-4 my-2 space-x-4 text-green-500 border-2 border-green-500 rounded-2xl w-fit">
+                  <CiCreditCard1 size={24} />
+                  <div>
+                    <h3>Order have been paid</h3>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div>
+                  <button className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn">
+                    Pay
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
