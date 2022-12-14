@@ -14,48 +14,56 @@ interface Props {
 }
 
 const OrderPage: NextPage<Props> = ({ order }) => {
-  console.log(order);
+  const { shippingAddress } = order;
   return (
-    <ShopLayout title="Order no. 9999" pageDescription="Order">
-      <h1 className="text-3xl md:text-5xl">Order: ABC111</h1>
-      <div className="flex items-center px-4 my-2 space-x-4 text-red-500 border-2 border-red-500 rounded-2xl w-fit">
-        <CiCreditCardOff size={24} />
-        <div>
-          <h3>Pending Order </h3>
+    <ShopLayout title="Order Summary" pageDescription="Order">
+      <h1 className="text-3xl md:text-5xl">Order: {order._id}</h1>
+      {order.isPaid ? (
+        <div className="flex items-center px-4 my-2 space-x-4 text-green-500 border-2 border-green-500 rounded-2xl w-fit">
+          <CiCreditCard1 size={24} />
+          <div>
+            <h3>Order have been paid</h3>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center px-4 my-2 space-x-4 text-green-500 border-2 border-green-500 rounded-2xl w-fit">
-        <CiCreditCard1 size={24} />
-        <div>
-          <h3>Order have been paid</h3>
+      ) : (
+        <div className="flex items-center px-4 my-2 space-x-4 text-red-500 border-2 border-red-500 rounded-2xl w-fit">
+          <CiCreditCardOff size={24} />
+          <div>
+            <h3>Pending Order </h3>
+          </div>
         </div>
-      </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div>
-          <CartList />
+          <CartList products={order.orderItems} />
         </div>
         <div className="summary-card">
           <div className="flex flex-col justify-between h-full p-4">
             <div>
-              <h2>Summary (3 Products)</h2>
+              <h2>
+                Summary ({order.numberOfItems}{" "}
+                {order.numberOfItems > 1 ? "Products" : "Product"})
+              </h2>
               <hr className="my-1" />
-              <div className="flex justify-end">
-                <Link href={"/checkout/address"} className="underline">
-                  Edit
-                </Link>
-              </div>
+
               <h4 className="text-lg font-bold">Address:</h4>
-              <p>Matias</p>
-              <p>Conchabamba 6498</p>
-              <p>Buenos Aires</p>
-              <p>Argentina</p>
-              <p>4755-9999</p>
+              <p>
+                {shippingAddress.firstName} {shippingAddress.lastName}
+              </p>
+              <p>
+                {shippingAddress.address} -{" "}
+                {shippingAddress.address2
+                  ? `, ${shippingAddress.address2}`
+                  : ""}
+              </p>
+              <p>
+                {shippingAddress.city} - {shippingAddress.zip}
+              </p>
+              <p>{shippingAddress.country}</p>
+              <p>{shippingAddress.phone}</p>
               <hr className="my-2" />
-              <div className="flex justify-end">
-                <Link href={"/cart"} className="underline">
-                  Edit
-                </Link>
-              </div>
+
               <OrderSummary />
             </div>
             <div className="mt-3">
