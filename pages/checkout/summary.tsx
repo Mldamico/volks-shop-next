@@ -3,7 +3,7 @@ import { ShopLayout } from "../../components/layouts";
 import { CartList } from "../../components/cart/CartList";
 import { OrderSummary } from "../../components/cart/OrderSummary";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../../context/cart/CartContext";
 import { capitalize } from "../../utils";
 import { countries } from "../../utils/countries";
@@ -14,14 +14,26 @@ const SummaryPage = () => {
   const router = useRouter();
   const { shippingAddress, numberOfItems, createOrder } =
     useContext(CartContext);
+
+  const [isPosting, setIsPosting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     if (!Cookies.get("firstName")) {
       router.push("/checkout/address");
     }
   }, [router]);
 
-  const onCreateOrder = () => {
-    createOrder();
+  const onCreateOrder = async () => {
+    setIsPosting(true);
+    const { hasError, message } = await createOrder();
+    if (hasError) {
+      setIsPosting(false);
+      setErrorMessage(message);
+      return;
+    }
+
+    router.replace(`/orders/${message}`);
   };
 
   if (!shippingAddress) {
@@ -72,13 +84,23 @@ const SummaryPage = () => {
               </div>
               <OrderSummary />
             </div>
-            <div className="mt-3">
+            <div className="flex flex-col mt-3">
               <button
                 onClick={onCreateOrder}
-                className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn"
+                disabled={isPosting}
+                className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn disabled:bg-gray-300 disabled:text-gray-500"
               >
                 Confirm Order
               </button>
+              <div
+                className={
+                  errorMessage
+                    ? "flex justify-center py-2 my-2 bg-red-500 text-white rounded-3xl"
+                    : "none"
+                }
+              >
+                <p>{errorMessage}</p>
+              </div>
             </div>
           </div>
         </div>
