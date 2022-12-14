@@ -170,7 +170,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
     };
     try {
       const { data } = await volksApi.post("/orders", body);
-
+      dispatch({ type: "Cart - Order Complete" });
       return {
         hasError: false,
         message: data._id,
