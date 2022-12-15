@@ -9,13 +9,44 @@ import { getSession } from "next-auth/react";
 import { dbOrders } from "../../database";
 import { IOrder } from "../../interfaces/order";
 import { PayPalButtons } from "@paypal/react-paypal-js";
+import { volksApi } from "../../api";
+import { useRouter } from "next/router";
 
 interface Props {
   order: IOrder;
 }
 
+export type OrderResponseBody = {
+  id: string;
+  status:
+    | "COMPLETED"
+    | "SAVED"
+    | "APPROVED"
+    | "VOIDED"
+    | "PAYER_ACTION_REQUIRED";
+};
+
 const OrderPage: NextPage<Props> = ({ order }) => {
+  const router = useRouter();
   const { shippingAddress } = order;
+
+  const onOrderCompleted = async (details: OrderResponseBody) => {
+    if (details.status !== "COMPLETED") {
+      return alert("Error");
+    }
+
+    try {
+      const { data } = await volksApi.post(`/orders/pay`, {
+        transactionId: details.id,
+        orderId: order._id,
+      });
+
+      router.reload();
+    } catch (error) {
+      console.log(error);
+      alert("Error");
+    }
+  };
   return (
     <ShopLayout title="Order Summary" pageDescription="Order">
       <h1 className="text-3xl md:text-5xl">Order: {order._id}</h1>
@@ -98,8 +129,9 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                     }}
                     onApprove={(data, actions) => {
                       return actions.order!.capture().then((details) => {
-                        console.log(details);
-                        const name = details.payer.name!.given_name;
+                        onOrderCompleted(details);
+                        // console.log(details);
+                        // const name = details.payer.name!.given_name;
                       });
                     }}
                   />
