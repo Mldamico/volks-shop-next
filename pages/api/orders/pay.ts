@@ -1,5 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
+import { IPaypal } from "../../../interfaces";
+import { connect, disconnect } from "../../../database/db";
+import Order from "../../../models/Order";
+import { db } from "../../../database";
 
 type Data = {
   message: string;
@@ -53,5 +57,40 @@ async function payOrder(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (!paypalBearerToken) {
     return res.status(400).json({ message: "Could not generate paypal token" });
   }
-  return res.status(200).json({ message: paypalBearerToken });
+
+  const { transactionId = "", orderId = "" } = req.body;
+
+  const { data } = await axios.get<IPaypal.PaypalOrderStatusResponse>(
+    `${process.env.PAYPAL_ORDERS_URL}/${transactionId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${paypalBearerToken}`,
+      },
+    }
+  );
+
+  if (data.status !== "COMPLETED") {
+    return res.status(401).json({ message: "Not Recognized Order" });
+  }
+
+  await db.connect();
+  const dbOrder = await Order.findById(orderId);
+
+  if (!dbOrder) {
+    await db.disconnect();
+    return res.status(400).json({ message: "Order Not Found" });
+  }
+
+  if (dbOrder.total !== +data.purchase_units[0].amount.value) {
+    await db.disconnect();
+    return res.status(400).json({ message: "Amounts differs" });
+  }
+
+  dbOrder.transactionId = transactionId;
+  dbOrder.isPaid = true;
+  dbOrder.save();
+
+  await db.disconnect();
+
+  return res.status(200).json({ message: "Order Paid" });
 }
