@@ -11,6 +11,8 @@ import { IOrder } from "../../interfaces/order";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { volksApi } from "../../api";
 import { useRouter } from "next/router";
+import { TailSpin } from "react-loader-spinner";
+import { useState } from "react";
 
 interface Props {
   order: IOrder;
@@ -27,6 +29,7 @@ export type OrderResponseBody = {
 };
 
 const OrderPage: NextPage<Props> = ({ order }) => {
+  const [isPaying, setIsPaying] = useState(false);
   const router = useRouter();
   const { shippingAddress } = order;
 
@@ -34,6 +37,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
     if (details.status !== "COMPLETED") {
       return alert("Error");
     }
+    setIsPaying(true);
 
     try {
       const { data } = await volksApi.post(`/orders/pay`, {
@@ -43,6 +47,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
 
       router.reload();
     } catch (error) {
+      setIsPaying(false);
       console.log(error);
       alert("Error");
     }
@@ -106,37 +111,51 @@ const OrderPage: NextPage<Props> = ({ order }) => {
               />
             </div>
             <div className="flex flex-col mt-3">
-              {order.isPaid ? (
-                <div className="flex items-center px-4 my-2 space-x-4 text-green-500 border-2 border-green-500 rounded-2xl w-fit">
-                  <CiCreditCard1 size={24} />
-                  <div>
-                    <h3>Order have been paid</h3>
+              <div className={isPaying ? "flex justify-center" : "none"}>
+                <TailSpin
+                  height={40}
+                  width={40}
+                  color="#000"
+                  ariaLabel="Paypal Loader"
+                  radius="1"
+                  visible={isPaying}
+                />
+              </div>
+              <div
+                className={!isPaying ? "flex justify-center flex-col" : "none"}
+              >
+                {order.isPaid ? (
+                  <div className="flex items-center justify-center px-4 my-2 space-x-4 text-green-500 border-2 border-green-500 rounded-2xl w-fit">
+                    <CiCreditCard1 size={24} />
+                    <div>
+                      <h3>Order have been paid</h3>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div>
-                  <PayPalButtons
-                    createOrder={(data, actions) => {
-                      return actions.order.create({
-                        purchase_units: [
-                          {
-                            amount: {
-                              value: `${order.total}`,
+                ) : (
+                  <div>
+                    <PayPalButtons
+                      createOrder={(data, actions) => {
+                        return actions.order.create({
+                          purchase_units: [
+                            {
+                              amount: {
+                                value: `${order.total}`,
+                              },
                             },
-                          },
-                        ],
-                      });
-                    }}
-                    onApprove={(data, actions) => {
-                      return actions.order!.capture().then((details) => {
-                        onOrderCompleted(details);
-                        // console.log(details);
-                        // const name = details.payer.name!.given_name;
-                      });
-                    }}
-                  />
-                </div>
-              )}
+                          ],
+                        });
+                      }}
+                      onApprove={(data, actions) => {
+                        return actions.order!.capture().then((details) => {
+                          onOrderCompleted(details);
+                          // console.log(details);
+                          // const name = details.payer.name!.given_name;
+                        });
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
