@@ -1,13 +1,14 @@
 import React from "react";
 import { ShopLayout } from "../../components/layouts/ShopLayout";
 import { CartList } from "../../components/cart/CartList";
-import Link from "next/link";
+
 import { GetServerSideProps, NextPage } from "next";
 import { OrderSummary } from "../../components/cart/OrderSummary";
 import { CiCreditCardOff, CiCreditCard1 } from "react-icons/ci";
 import { getSession } from "next-auth/react";
 import { dbOrders } from "../../database";
 import { IOrder } from "../../interfaces/order";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 
 interface Props {
   order: IOrder;
@@ -83,9 +84,26 @@ const OrderPage: NextPage<Props> = ({ order }) => {
                 </div>
               ) : (
                 <div>
-                  <button className="bg-[#325AD0] w-full py-2 text-white font-bold circular-btn">
-                    Pay
-                  </button>
+                  <PayPalButtons
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: "21.99",
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={(data, actions) => {
+                      return actions.order!.capture().then((details) => {
+                        console.log(details);
+                        const name = details.payer.name!.given_name;
+                        alert(`Transaction completed by ${name}`);
+                      });
+                    }}
+                  />
                 </div>
               )}
             </div>
