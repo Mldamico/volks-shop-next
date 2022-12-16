@@ -8,6 +8,7 @@ import { FaProductHunt } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { TbMoodKid } from "react-icons/tb";
 import Link from "next/link";
+import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { useRouter } from "next/router";
 import { UIContext } from "../../context/ui";
 import { useState } from "react";
@@ -97,6 +98,13 @@ export const SideMenu = () => {
         <div className="mt-4">
           <h5>Admin Panel</h5>
           <div className="mx-2 my-10 space-y-6 text-lg">
+            <div
+              className="flex items-center space-x-8 cursor-pointer"
+              onClick={() => navigate("/admin")}
+            >
+              <MdOutlineDashboardCustomize size={24} />
+              <div>Admin</div>
+            </div>
             <div className="flex items-center space-x-8">
               <FaProductHunt size={24} />
               <div>Products</div>
@@ -107,7 +115,7 @@ export const SideMenu = () => {
             </div>
             <div className="flex items-center space-x-8">
               <FiUsers size={24} />
-              <div>USers</div>
+              <div>Users</div>
             </div>
           </div>
         </div>
