@@ -11,8 +11,44 @@ import {
 } from "react-icons/md";
 import { AiOutlineCreditCard, AiOutlineUsergroupDelete } from "react-icons/ai";
 import { SummaryTile } from "../../components/admin";
+import useSWR from "swr";
+import { DashboardSummaryResponse } from "../../interfaces";
+import { useState, useEffect } from "react";
 
 const DashboardPage = () => {
+  const [refreshIn, setRefreshIn] = useState(30);
+  const { data, error } = useSWR<DashboardSummaryResponse>(
+    "/api/admin/dashboard",
+    {
+      refreshInterval: 30 * 1000,
+    }
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshIn((prevState) => (prevState > 0 ? prevState - 1 : 30));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!error && !data) {
+    return <></>;
+  }
+
+  if (error) {
+    console.log(error);
+    return <p>Error Loading Dashboard</p>;
+  }
+
+  const {
+    numberOfOrders,
+    paidOrders,
+    numberOfClients,
+    numberOfProducts,
+    productsWithNoInventary,
+    lowInventary,
+    notPaidOrders,
+  } = data!;
   return (
     <AdminLayout
       title="Dashboard"
@@ -22,42 +58,42 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:grid-cols-4">
         <SummaryTile
           icon={<AiOutlineCreditCard size={40} />}
-          title="3"
+          title={numberOfOrders}
           subtitle="Total Order"
         />
         <SummaryTile
           icon={<MdOutlineAttachMoney size={40} color="green" />}
-          title="2"
+          title={paidOrders}
           subtitle="Paid Orders"
         />
         <SummaryTile
           icon={<MdOutlineCreditCardOff size={40} color="red" />}
-          title="1"
+          title={notPaidOrders}
           subtitle="Pending Orders"
         />
         <SummaryTile
           icon={<AiOutlineUsergroupDelete size={40} />}
-          title="4"
+          title={numberOfClients}
           subtitle="Clients"
         />
         <SummaryTile
           icon={<MdOutlineCategory size={40} color="orange" />}
-          title="4"
+          title={numberOfProducts}
           subtitle="Products"
         />
         <SummaryTile
           icon={<MdOutlineCancelPresentation size={40} color="red" />}
-          title="4"
+          title={productsWithNoInventary}
           subtitle="Out of Stock"
         />
         <SummaryTile
           icon={<MdOutlineProductionQuantityLimits size={40} color="orange" />}
-          title="4"
+          title={lowInventary}
           subtitle="Low Stock"
         />
         <SummaryTile
           icon={<MdOutlineAccessTime size={40} color="blue" />}
-          title="4"
+          title={refreshIn}
           subtitle="Refresh in: "
         />
       </div>

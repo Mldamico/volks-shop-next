@@ -36,7 +36,7 @@ export default async function handler(
     User.find({ role: "client" }).count(),
     Product.count(),
     Product.find({ inStock: 0 }).count(),
-    Product.find({ inStock: { lte: 10 } }).count(),
+    Product.find({ inStock: { $lte: 10 } }).count(),
   ]);
 
   await db.disconnect();
