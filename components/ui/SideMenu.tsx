@@ -113,7 +113,10 @@ export const SideMenu = () => {
               <IoTicketSharp size={24} />
               <div>Orders</div>
             </div>
-            <div className="flex items-center space-x-8">
+            <div
+              className="flex items-center space-x-8 cursor-pointer"
+              onClick={() => navigate("/admin/users")}
+            >
               <FiUsers size={24} />
               <div>Users</div>
             </div>
