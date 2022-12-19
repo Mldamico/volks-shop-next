@@ -37,26 +37,6 @@ const columnDefs = [
     },
   },
   { headerName: "Created At", field: "createdAt", width: 250 },
-  // {
-  //   headerName: "Role",
-  //   field: "role",
-  //   width: 200,
-  //   cellRenderer: (props: any) => {
-  //     console.log(props);
-  //     return (
-  //       <select
-  //         value={props.data.role}
-  //         className="w-[100px]"
-  //         onChange={({ target }) => onRoleUpdated(props.data.id, target.value)}
-  //       >
-  //         <option value="admin">Admin</option>
-  //         <option value="client">Client</option>
-  //         <option value="super-user">Super-User</option>
-  //         <option value="SEO">SEO</option>
-  //       </select>
-  //     );
-  //   },
-  // },
 ];
 
 const OrdersPage = () => {
