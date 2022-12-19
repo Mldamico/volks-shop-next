@@ -8,15 +8,31 @@ import { IUser } from "../../interfaces";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { volksApi } from "../../api";
+import { useState, useEffect } from "react";
 
 const UsersPage = () => {
   const { data, error } = useSWR<IUser[]>("/api/admin/users");
+  const [users, setUsers] = useState<IUser[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setUsers(data);
+    }
+  }, [data]);
+
   if (!data && !error) return <></>;
 
   const onRoleUpdated = async (userId: string, newRole: string) => {
+    const prevUsers = users.map((user) => ({ ...user }));
+    const updatedUsers = users.map((user) => ({
+      ...user,
+      role: userId === user._id ? newRole : user.role,
+    }));
+    setUsers(updatedUsers as IUser[]);
     try {
       await volksApi.put("/admin/users", { userId, role: newRole });
     } catch (error) {
+      setUsers(prevUsers);
       console.log(error);
     }
   };
@@ -48,7 +64,7 @@ const UsersPage = () => {
     },
   ];
 
-  const rowData = data!.map((user) => ({
+  const rowData = users.map((user) => ({
     id: user._id,
     email: user.email,
     name: user.name,
