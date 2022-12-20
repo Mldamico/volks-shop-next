@@ -31,4 +31,5 @@ async function getProducts(req: NextApiRequest, res: NextApiResponse<Data>) {
   const products = await Product.find().sort({ title: "asc" }).lean();
 
   await db.disconnect();
+  return res.status(200).json(products);
 }

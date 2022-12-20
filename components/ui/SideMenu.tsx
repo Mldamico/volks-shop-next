@@ -105,7 +105,10 @@ export const SideMenu = () => {
               <MdOutlineDashboardCustomize size={24} />
               <div>Admin</div>
             </div>
-            <div className="flex items-center space-x-8">
+            <div
+              className="flex items-center space-x-8 cursor-pointer"
+              onClick={() => navigate("/admin/products")}
+            >
               <FaProductHunt size={24} />
               <div>Products</div>
             </div>
