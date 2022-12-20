@@ -9,6 +9,7 @@ import { dbOrders } from "../../../database";
 import { IOrder } from "../../../interfaces/order";
 import { volksApi } from "../../../api";
 import { useRouter } from "next/router";
+import { AdminLayout } from "../../../components/layouts/AdminLayout";
 
 interface Props {
   order: IOrder;
@@ -28,7 +29,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
   const { shippingAddress } = order;
 
   return (
-    <ShopLayout title="Order Summary" pageDescription="Order">
+    <AdminLayout title="Order Summary" subtitle={`Order: ${order._id}`}>
       <h1 className="text-3xl md:text-5xl">Order: {order._id}</h1>
       {order.isPaid ? (
         <div className="flex items-center px-4 my-2 space-x-4 text-green-500 border-2 border-green-500 rounded-2xl w-fit">
@@ -109,7 +110,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
           </div>
         </div>
       </div>
-    </ShopLayout>
+    </AdminLayout>
   );
 };
 
